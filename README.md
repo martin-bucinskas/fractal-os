@@ -4,6 +4,7 @@ An operating system written in Rust.
 
  - [Build](#build)
     - [Creating a bootable image](#creating-a-bootable-image)
+    - [Running](#running)
  - [Implementation details](#implementation-details)
  - [About](#about)
  - [Things to add](#things-to-add)
@@ -45,6 +46,14 @@ After the dependencies and tools have been installed, you can run cargo bootimag
 bootable disk image.
 ```shell script
 cargo bootimage
+```
+
+### Running
+
+After generating a bootable image file, you can run Fractal easily on an emulator such as QEMU.
+
+```shell script
+qemu-system-x86_64 -drive format=raw,file=target/x86_64-fractal_os/debug/bootimage-fractal_os.bin
 ```
 
 ## Implementation Details
