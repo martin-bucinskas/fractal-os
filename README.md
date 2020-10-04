@@ -13,7 +13,7 @@ To build the OS, make sure to use `nightly` rust build.
 This is required due to the usage of some unstable flags and properties that are
 only available in the `nightly` build.
 
-> Note: the target is already specified in the `.cargo/config.toml`.
+> Note: the target has been specified in the `.cargo/config.toml`.
 ```shell script
 cargo build
 ```
