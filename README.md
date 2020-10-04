@@ -3,6 +3,8 @@
 An operating system written in Rust.
 
  - [Build](#build)
+    - [Creating a bootable image](#creating-a-bootable-image)
+    - [Running](#running)
  - [Implementation details](#implementation-details)
  - [About](#about)
  - [Things to add](#things-to-add)
@@ -21,6 +23,37 @@ cargo build
 > Note: if compiling for custom a target, you can override the target using the `--target <target>` flag.
 ```shell script
 cargo build --target x86_64-fractal_os.json
+```
+
+### Creating a bootable image
+
+To create a bootable image, we are using bootloader dependency. Alongside, we will
+be using `bootimage` tool to compile the kernel and bootloader and link them together.
+
+Make sure you have bootimage installed.
+
+```shell script
+cargo install bootimage
+```
+
+> Note: to run bootimage and building the bootloader, you need to have the `llvm-tools-preview`
+> rustup component installed.
+```shell script
+rustup component add llvm-tools-preview
+```
+
+After the dependencies and tools have been installed, you can run cargo bootimage to create a 
+bootable disk image.
+```shell script
+cargo bootimage
+```
+
+### Running
+
+After generating a bootable image file, you can run Fractal easily on an emulator such as QEMU.
+
+```shell script
+qemu-system-x86_64 -drive format=raw,file=target/x86_64-fractal_os/debug/bootimage-fractal_os.bin
 ```
 
 ## Implementation Details
