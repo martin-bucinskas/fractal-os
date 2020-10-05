@@ -15,7 +15,8 @@ mod vga_buffer;
 
 // Calls on panic
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    println!("[KERNEL_PANIC]: {}", info);
     loop {}
 }
 
@@ -23,7 +24,7 @@ fn panic(_info: &PanicInfo) -> ! {
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
 
-    vga_buffer::print_test();
+    println!("Hello, world!");
 
     loop {}
 }
