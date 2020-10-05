@@ -1,13 +1,5 @@
-/*
-    main.rs
-
-    Entry point of the kernel.
- */
-
-// Disable stdlib linking
-#![no_std]
-// Disable all rust-level entry points
-#![no_main]
+#![no_std] // Disable stdlib linking
+#![no_main] // Disable all rust-level entry points
 
 use core::panic::PanicInfo;
 
@@ -25,6 +17,8 @@ fn panic(info: &PanicInfo) -> ! {
 pub extern "C" fn _start() -> ! {
 
     println!("Hello, world!");
+    println!("My name is {}", "Martin");
+    print!("My favourite colour is {} and favourite word is {}", 42, 3.1417);
 
     loop {}
 }
