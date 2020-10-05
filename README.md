@@ -56,6 +56,21 @@ After generating a bootable image file, you can run Fractal easily on an emulato
 qemu-system-x86_64 -drive format=raw,file=target/x86_64-fractal_os/debug/bootimage-fractal_os.bin
 ```
 
+You can also run it with a cargo runner with the help of bootimage runner.
+
+```shell script
+cargo run
+```
+
+The above will point to the last build of the bootable image and will start an instance of QEMU.
+You can also provide specific target and pass through QEMU options.
+
+```shell script
+cargo run --target <target> -- [QEMU options]
+```
+
+Everything after the `--` will be passed to QEMU.
+
 ## Implementation Details
 
 The kernel is using the `compiler_builtins` crate along with its `mem` implementation.
