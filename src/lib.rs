@@ -13,7 +13,7 @@ pub mod vga_buffer;
 #[repr(u32)]
 pub enum QemuExitCode {
     Success = 0x10,
-    Failed = 0x11
+    Failed = 0x11,
 }
 
 pub fn exit_qemu(exit_code: QemuExitCode) {
@@ -29,7 +29,10 @@ pub trait Testable {
     fn run(&self) -> ();
 }
 
-impl<T> Testable for T where T: Fn() {
+impl<T> Testable for T
+where
+    T: Fn(),
+{
     fn run(&self) {
         serial_print!("{}...\t", core::any::type_name::<T>());
         self();

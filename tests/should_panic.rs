@@ -2,14 +2,14 @@
 #![no_main]
 
 use core::panic::PanicInfo;
-use fractal_os::{QemuExitCode, exit_qemu, serial_println, serial_print};
+use fractal_os::{exit_qemu, serial_print, serial_println, QemuExitCode};
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
     serial_println!("[ok]");
     exit_qemu(QemuExitCode::Success);
 
-    loop{}
+    loop {}
 }
 
 #[no_mangle]

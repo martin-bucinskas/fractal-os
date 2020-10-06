@@ -5,7 +5,7 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
-use fractal_os::{println, print};
+use fractal_os::{print, println};
 
 // Don't mangle the entry point function name
 #[no_mangle]
@@ -13,7 +13,10 @@ pub extern "C" fn _start() -> ! {
 
     println!("Hello, world!");
     println!("My name is {}", "Martin");
-    print!("My favourite colour is {} and favourite word is {}\n", 42, 3.1417);
+    print!(
+        "My favourite colour is {} and favourite word is {}\n",
+        42, 3.1417
+    );
 
     #[cfg(test)]
     test_main();
