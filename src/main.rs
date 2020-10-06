@@ -10,7 +10,6 @@ use fractal_os::{print, println};
 // Don't mangle the entry point function name
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-
     println!("Hello, world!");
     println!("My name is {}", "Martin");
     print!(
