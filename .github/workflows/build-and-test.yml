@@ -120,8 +120,8 @@ jobs:
       - name: Install Bootimage
         run: cargo install bootimage --debug
 
-      - name: Install Rustup Components
-        run: rustup component add rust-src llvm-tools-preview
+#      - name: Install Rustup Components
+#        run: rustup component add rust-src llvm-tools-preview
 
       - name: Run `cargo install xargo`
         run: cargo install xargo
