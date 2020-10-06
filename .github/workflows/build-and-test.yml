@@ -56,6 +56,12 @@ jobs:
           components: rustfmt
           override: true
 
+      - name: Use Nightly Build
+        run: rustup default nightly
+
+      - name: Run `cargo install xargo`
+        run: cargo install xargo
+
       - name: Run Format
         run: xargo fmt --all -- --check
 
@@ -73,6 +79,12 @@ jobs:
           toolchain: nightly
           components: clippy, rust-src
           override: true
+
+      - name: Use Nightly Build
+        run: rustup default nightly
+
+      - name: Run `cargo install xargo`
+        run: cargo install xargo
 
       - name: Run Linting Check
         run: xargo clippy
