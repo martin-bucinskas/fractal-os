@@ -14,10 +14,6 @@ pub extern "C" fn _start() -> ! {
     loop {}
 }
 
-// fn test_runner(tests: &[&dyn Fn()]) {
-//     unimplemented!();
-// }
-
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     fractal_os::test_panic_handler(info);
@@ -27,22 +23,3 @@ fn panic(info: &PanicInfo) -> ! {
 fn test_println_single_line() {
     println!("test_println_single_line");
 }
-
-#[test_case]
-fn test_println_multiple_lines() {
-    for _ in 0..350 {
-        println!("test_println_multiple_lines");
-    }
-}
-
-// #[test_case]
-// fn test_println_output() {
-//     let string = "test_println_output";
-//     println!("{}", string);
-//
-//     for (i, c) in string.chars().enumerate() {
-//         let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
-//         assert_eq!(char::from(screen_char.ascii_character), c);
-//     }
-// }
-

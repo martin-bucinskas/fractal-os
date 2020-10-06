@@ -59,11 +59,14 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
     serial_println!();
     serial_println!("[KERNEL_PANIC]: {}", info);
     serial_println!("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+
     exit_qemu(QemuExitCode::Failed);
+
     loop {}
 }
 
 #[cfg(test)]
+#[no_mangle]
 pub extern "C" fn _start() -> ! {
     test_main();
 
