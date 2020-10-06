@@ -1,8 +1,8 @@
 use core::fmt;
+use core::ops::{Deref, DerefMut};
+use lazy_static::lazy_static;
 use spin::Mutex;
 use volatile::Volatile;
-use lazy_static::lazy_static;
-use core::ops::{Deref, DerefMut};
 
 lazy_static! {
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
@@ -48,7 +48,7 @@ pub enum Color {
     LightRed = 12,
     Pink = 13,
     Yellow = 14,
-    White = 15
+    White = 15,
 }
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
@@ -65,7 +65,7 @@ impl ColorCode {
 #[repr(C)]
 struct ScreenChar {
     ascii_character: u8,
-    color_code: ColorCode
+    color_code: ColorCode,
 }
 
 impl Deref for ScreenChar {
@@ -87,13 +87,13 @@ const BUFFER_WIDTH: usize = 80;
 
 #[repr(transparent)]
 struct Buffer {
-    chars: [[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT]
+    chars: [[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT],
 }
 
 pub struct Writer {
     column_position: usize,
     color_code: ColorCode,
-    buffer: &'static mut Buffer
+    buffer: &'static mut Buffer,
 }
 
 impl Writer {
@@ -111,7 +111,7 @@ impl Writer {
 
                 self.buffer.chars[row][col].write(ScreenChar {
                     ascii_character: byte,
-                    color_code
+                    color_code,
                 });
 
                 self.column_position += 1;
@@ -123,7 +123,7 @@ impl Writer {
         for byte in string.bytes() {
             match byte {
                 0x20..=0x7e | b'\n' => self.write_byte(byte), // printable ASCII characters.
-                _ => self.write_byte(0xfe) // not in the range of printable characters.
+                _ => self.write_byte(0xfe), // not in the range of printable characters.
             }
         }
     }
@@ -142,7 +142,7 @@ impl Writer {
     fn clear_row(&mut self, row: usize) {
         let blank = ScreenChar {
             ascii_character: b' ',
-            color_code: self.color_code
+            color_code: self.color_code,
         };
 
         for col in 0..BUFFER_WIDTH {
@@ -155,5 +155,30 @@ impl fmt::Write for Writer {
     fn write_str(&mut self, string: &str) -> fmt::Result {
         self.write_string(string);
         Ok(())
+    }
+}
+
+// ----- Testing -----
+
+#[test_case]
+fn test_println_single_line() {
+    println!("test_println_single_line");
+}
+
+#[test_case]
+fn test_println_multiple_lines() {
+    for _ in 0..350 {
+        println!("test_println_multiple_lines");
+    }
+}
+
+#[test_case]
+fn test_println_output() {
+    let string = "test_println_output";
+    println!("{}", string);
+
+    for (i, c) in string.chars().enumerate() {
+        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
+        assert_eq!(char::from(screen_char.ascii_character), c);
     }
 }
