@@ -127,7 +127,7 @@ jobs:
         run: cargo install xargo
 
       - name: Create bootimage
-        run: xargo bootimage
+        run: cargo bootimage
 
       - name: Install QEMU (Linux)
         run: sudo apt update && sudo apt install qemu-system-x86
