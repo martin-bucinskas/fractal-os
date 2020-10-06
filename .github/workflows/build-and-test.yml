@@ -29,10 +29,113 @@ jobs:
           profile: minimal
           toolchain: nightly
 
+      - name: Use Nightly Build
+        run: rustup default nightly
+
       - name: Install Rustup Components
         run: rustup component add rust-src
 
-      - name: Run `cargo check`
-        uses: actions-rs/cargo@v1
+      - name: Run `cargo install xargo`
+        run: cargo install xargo
+
+      - name: Run `xargo check`
+        run: xargo check
+
+  check_formatting:
+    name: Check Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
         with:
-          command: check
+          profile: minimal
+          toolchain: nightly
+          components: rustfmt
+          override: true
+
+      - name: Run Format
+        run: xargo fmt --all -- --check
+
+  clippy:
+    name: Linting with Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: clippy, rust-src
+          override: true
+
+      - name: Run Linting Check
+        run: xargo clippy
+
+  test:
+    name: Test
+    strategy:
+      matrix:
+        platform: [
+            ubuntu-latest,
+            macos-latest,
+            windows-latest
+        ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+
+      - name: Use Nightly Build
+        run: rustup default nightly
+
+      - name: Install Bootimage
+        run: cargo install bootimage --debug
+
+      - name: Install Rustup Components
+        run: |
+        rustup component add rust-src
+        rustup component add llvm-tools-preview
+
+      - name: Run `cargo install xargo`
+        run: cargo install xargo
+
+      - name: Create bootimage
+        run: xargo bootimage
+
+      - name: Install QEMU (Linux)
+        run: sudo apt update && sudo apt install qemu-system-x86
+        if: runner.os == 'Linux'
+
+      - name: Install QEMU (macOS)
+        run: brew install qemu
+        if: runner.os == 'macOS'
+
+      - name: Install Scoop (Windows)
+        run: |
+          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+          echo ::add-path::$HOME\scoop\shims
+        shell: pwsh
+        if: runner.os == 'Windows'
+
+      - name: Install QEMU (Windows)
+        run: scoop install qemu
+        shell: pwsh
+        if: runner.os == 'Windows'
+
+      - name: QEMU Version
+        run: qemu-system-x86_64 --version
+
+      - name: Run Tests
+        run: xargo test
