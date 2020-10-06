@@ -59,6 +59,9 @@ jobs:
       - name: Use Nightly Build
         run: rustup default nightly
 
+      - name: Install Rustup Components
+        run: rustup component add rust-src
+
       - name: Run `cargo install xargo`
         run: cargo install xargo
 
@@ -108,6 +111,8 @@ jobs:
         with:
           profile: minimal
           toolchain: nightly
+          components: rust-src, llvm-tools-preview
+          override: true
 
       - name: Use Nightly Build
         run: rustup default nightly
