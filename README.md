@@ -71,6 +71,19 @@ cargo run --target <target> -- [QEMU options]
 
 Everything after the `--` will be passed to QEMU.
 
+### Testing
+
+To run the custom test framework for FractalOS, you can run the cargo test command.
+
+```shell script
+cargo test
+```
+
+This will run all the unit and integration tests.
+
+> Note: the integration tests are located under `/tests` directory, whilst unit tests
+> are self-contained in the `/src` concrete implementation files.
+
 ## Implementation Details
 
 The kernel is using the `compiler_builtins` crate along with its `mem` implementation.
