@@ -5,6 +5,7 @@ An operating system written in Rust.
  - [Build](#build)
     - [Creating a bootable image](#creating-a-bootable-image)
     - [Running](#running)
+    - [Testing](#testing)
  - [Implementation details](#implementation-details)
  - [About](#about)
  - [Things to add](#things-to-add)
