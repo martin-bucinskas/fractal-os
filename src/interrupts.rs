@@ -1,5 +1,5 @@
-use crate::println;
 use crate::gdt;
+use crate::println;
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
@@ -27,7 +27,8 @@ extern "x86-interrupt" fn breakpoint_handler(stack_frame: &mut InterruptStackFra
 }
 
 extern "x86-interrupt" fn double_fault_handler(
-    stack_frame: &mut InterruptStackFrame, _error_code: u64
+    stack_frame: &mut InterruptStackFrame,
+    _error_code: u64
 ) -> ! {
     panic!("[EXCEPTION]: DOUBLE FAULT\n{:#?}", stack_frame);
 }
