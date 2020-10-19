@@ -68,29 +68,29 @@ jobs:
       - name: Run Format
         run: xargo fmt --all -- --check
 
-#  clippy:
-#    name: Linting with Clippy
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout Repository
-#        uses: actions/checkout@v2
-#
-#      - name: Install Rust Toolchain
-#        uses: actions-rs/toolchain@v1
-#        with:
-#          profile: minimal
-#          toolchain: nightly
-#          components: clippy, rust-src
-#          override: true
-#
-#      - name: Use Nightly Build
-#        run: rustup default nightly
-#
-#      - name: Run `cargo install xargo`
-#        run: cargo install xargo
-#
-#      - name: Run Linting Check
-#        run: xargo clippy
+  clippy:
+    name: Linting with Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: clippy, rust-src
+          override: true
+
+      - name: Use Nightly Build
+        run: rustup default nightly
+
+      - name: Run `cargo install xargo`
+        run: cargo install xargo
+
+      - name: Run Linting Check
+        run: xargo clippy
 
 #  test:
 #    name: Test
