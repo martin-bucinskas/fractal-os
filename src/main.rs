@@ -10,6 +10,9 @@ use fractal_os::{print, println};
 // Don't mangle the entry point function name
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
+
+    fractal_os::init();
+
     println!("Hello, world!");
     println!("My name is {}", "Martin");
     print!(
@@ -17,9 +20,11 @@ pub extern "C" fn _start() -> ! {
         42, 3.1417
     );
 
-    fractal_os::init();
-
     x86_64::instructions::interrupts::int3();
+
+    unsafe {
+        *(0xdeadbeef as *mut u64) = 42;
+    }
 
     #[cfg(test)]
     test_main();
