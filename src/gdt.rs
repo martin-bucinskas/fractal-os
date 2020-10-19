@@ -37,7 +37,7 @@ lazy_static! {
             gdt,
             Selectors {
                 code_selector,
-                tss_selector
+                tss_selector,
             },
         )
     };
